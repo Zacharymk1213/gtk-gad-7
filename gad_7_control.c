@@ -12,6 +12,7 @@ static GtkCheckButton *q6_buttons[4];
 static GtkCheckButton *q7_buttons[4];
 
 static GtkLabel *score_label;
+static GtkLabel *type_of_anxiety_label;
 
 // Function to calculate and display the total score
 static void calculate_score(void) {
@@ -41,8 +42,21 @@ static void calculate_score(void) {
     gchar *score_text = g_strdup_printf("Score: %d", total_score);
     gtk_label_set_text(score_label, score_text);
     g_free(score_text);
+    // Update severity display
+    gchar *anxiety_text; // declare once
+    if (total_score <= 4) {
+        anxiety_text = g_strdup_printf("Minimal anxiety");
+    } else if (total_score <= 9) {
+        anxiety_text = g_strdup_printf("Mild anxiety");
+    } else if (total_score <= 14) {
+        anxiety_text = g_strdup_printf("Moderate anxiety");
+    } else {  // 15-21 (changed from "total_score < 14" which was wrong)
+        anxiety_text = g_strdup_printf("Severe anxiety");
+    }
+
+    gtk_label_set_text(type_of_anxiety_label, anxiety_text);
+    g_free(anxiety_text);
     
-    g_print("GAD-7 Score: %d\n", total_score);
 }
 // Callback for radio button changes
 static void on_radio_button_toggled(GtkCheckButton *button, gpointer user_data) {
@@ -101,6 +115,7 @@ static void activate (GtkApplication *app,
     q7_buttons[3] = GTK_CHECK_BUTTON(gtk_builder_get_object(builder, "seventh_question_3"));
 
     score_label = GTK_LABEL(gtk_builder_get_object(builder, "sum_label"));
+    type_of_anxiety_label = GTK_LABEL(gtk_builder_get_object(builder, "type_of_anxiety_label"));
     // Connect signals for all radio buttons
     for (int i = 0; i < 4; i++) {
         g_signal_connect(q1_buttons[i], "toggled", G_CALLBACK(on_radio_button_toggled), NULL);
@@ -133,81 +148,4 @@ main (int     argc,
   
     return status;
   }
-
-      // // Get the label 
-    // GObject *label = gtk_builder_get_object (builder, "description_label");
-    // // load top
-    // GObject *label2 = gtk_builder_get_object (builder, "last_two_weeks_label");
-    // GObject *label3 = gtk_builder_get_object (builder, "not_at_all_label");
-    // GObject *label4 = gtk_builder_get_object (builder, "several_days_label");
-    // GObject *label5 = gtk_builder_get_object (builder, "more_than_half_label");
-    // GObject *label6 = gtk_builder_get_object (builder, "nearly_every_day_label");
-    // GObject *seperator = gtk_builder_get_object (builder, "seperate_title_and_questions");
-    // GObject *seperator2 = gtk_builder_get_object (builder, "two_weeks_separator");
-    // GObject *seperator3 = gtk_builder_get_object (builder, "not_at_all_separator");
-    // GObject *seperator4 = gtk_builder_get_object (builder, "several_days_separator");
-    // GObject *seperator5 = gtk_builder_get_object (builder, "more_than_half_days_separator");
-    // // load first question
-
-    // GObject *question1 = gtk_builder_get_object (builder, "first_question_label");
-    // GObject *q1radio1 = gtk_builder_get_object (builder, "first_question_0");
-    // GObject *q1radio2 = gtk_builder_get_object (builder, "first_question_1");
-    // GObject *q1radio3 = gtk_builder_get_object (builder, "first_question_2");
-    // GObject *q1radio4 = gtk_builder_get_object (builder, "first_question_3");
-    // GObject *q1separator0 = gtk_builder_get_object (builder, "first_question_separator");
-    // GObject *q1separator1 = gtk_builder_get_object (builder, "seperator_q_1_0");
-    // GObject *q1separator2 = gtk_builder_get_object (builder, "seperator_q_1_1");
-    // GObject *q1separator3 = gtk_builder_get_object (builder, "seperator_q_1_2");
-    // // load second question
-
-    // GObject *question2 = gtk_builder_get_object (builder, "second_question_label");
-    // GObject *q2radio1 = gtk_builder_get_object (builder, "second_question_0");
-    // GObject *q2radio2 = gtk_builder_get_object (builder, "second_question_1");
-    // GObject *q2radio3 = gtk_builder_get_object (builder, "second_question_2");
-    // GObject *q2radio4 = gtk_builder_get_object (builder, "second_question_3");
-    // GObject *q2separator0 = gtk_builder_get_object (builder, "second_question_separator");
-    // GObject *q2separator1 = gtk_builder_get_object (builder, "seperator_q_2_0");
-    // GObject *q2separator2 = gtk_builder_get_object (builder, "seperator_q_2_1");
-    // GObject *q2separator3 = gtk_builder_get_object (builder, "seperator_q_2_2");
-    // // load third question
-
-    // GObject *question3 = gtk_builder_get_object (builder, "third_question_label");
-    // GObject *q3radio1 = gtk_builder_get_object (builder, "third_question_0");
-    // GObject *q3radio2 = gtk_builder_get_object (builder, "third_question_1");
-    // GObject *q3radio3 = gtk_builder_get_object (builder, "third_question_2");
-    // GObject *q3radio4 = gtk_builder_get_object (builder, "third_question_3");
-    // GObject *q3separator0 = gtk_builder_get_object (builder, "third_question_separator");
-    // GObject *q3separator1 = gtk_builder_get_object (builder, "seperator_q_3_0");
-    // GObject *q3separator2 = gtk_builder_get_object (builder, "seperator_q_3_1");
-    // GObject *q3separator3 = gtk_builder_get_object (builder, "seperator_q_3_2");
-    // // load fourth question
-    // GObject *question4 = gtk_builder_get_object (builder, "fourth_question_label");
-    // GObject *q4radio1 = gtk_builder_get_object (builder, "fourth_question_0");
-    // GObject *q4radio2 = gtk_builder_get_object (builder, "fourth_question_1");
-    // GObject *q4radio3 = gtk_builder_get_object (builder, "fourth_question_2");
-    // GObject *q4radio4 = gtk_builder_get_object (builder, "fourth_question_3");
-    // GObject *q4separator0 = gtk_builder_get_object (builder, "fourth_question_separator");
-    // GObject *q4separator1 = gtk_builder_get_object (builder, "seperator_q_4_0");
-    // GObject *q4separator2 = gtk_builder_get_object (builder, "seperator_q_4_1");
-    // GObject *q4separator3 = gtk_builder_get_object (builder, "seperator_q_4_2");
-    // // load fifth question
-    // GObject *question5 = gtk_builder_get_object (builder, "fifth_question_label");
-    // GObject *q5radio1 = gtk_builder_get_object (builder, "fifth_question_0");
-    // GObject *q5radio2 = gtk_builder_get_object (builder, "fifth_question_1");
-    // GObject *q5radio3 = gtk_builder_get_object (builder, "fifth_question_2");
-    // GObject *q5radio4 = gtk_builder_get_object (builder, "fifth_question_3");
-    // GObject *q5separator0 = gtk_builder_get_object (builder, "fifth_question_separator");
-    // GObject *q5separator1 = gtk_builder_get_object (builder, "seperator_q_5_0");
-    // GObject *q5separator2 = gtk_builder_get_object (builder, "seperator_q_5_1");
-    // GObject *q5separator3 = gtk_builder_get_object (builder, "seperator_q_5_2");
-    // // load sixth question
-    // GObject *question6 = gtk_builder_get_object (builder, "sixth_question_label");
-    // GObject *q6radio1 = gtk_builder_get_object (builder, "sixth_question_0");
-    // GObject *q6radio2 = gtk_builder_get_object (builder, "sixth_question_1");
-    // GObject *q6radio3 = gtk_builder_get_object (builder, "sixth_question_2");
-    // GObject *q6radio4 = gtk_builder_get_object (builder, "sixth_question_3");
-    // GObject *q6separator0 = gtk_builder_get_object (builder, "sixth_question_separator");
-    // GObject *q6separator1 = gtk_builder_get_object (builder, "seperator_q_6_0");
-    // GObject *q6separator2 = gtk_builder_get_object (builder, "seperator_q_6_1");
-    // GObject *q6separator3 = gtk_builder_get_object (builder, "seperator_q_6_2");
 
