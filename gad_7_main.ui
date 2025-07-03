@@ -894,7 +894,7 @@
 <!-- total: sum -->
         <child>
             <object class="GtkLabel" id="sum_label">
-                <property name="label">total: 0</property>
+                <property name="label">Score: 0</property>
                 <property name="wrap">true</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
@@ -908,6 +908,25 @@
                 </layout>
             </object>
         </child>
+<!-- total: type of anxiety -->
+        <child>
+            <object class="GtkLabel" id="type_of_anxiety_label">
+                <property name="label"></property>
+                <property name="wrap">true</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0</property>
+                <property name="hexpand">true</property>
+                <property name="vexpand">false</property>
+                <property name="halign">right</property>
+                <layout>
+                    <property name="column">0</property>
+                    <property name="row">11</property>
+                    <property name="column-span">5</property>
+                </layout>
+            </object>
+        </child>
+
+
       </object>
     </child>
   </object>
